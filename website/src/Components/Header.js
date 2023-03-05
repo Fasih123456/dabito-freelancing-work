@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
 function Header() {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    // update the viewport width state when the window is resized
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <React.Fragment>
-      <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
-
       <header id="header">
         <div class="d-flex flex-column">
           <div class="profile">
@@ -40,6 +54,49 @@ function Header() {
           </nav>
         </div>
       </header>
+
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home" id="name-title">
+            Alex Smith
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto" style={{ marginRight: "0px !important" }}>
+              {viewportWidth > 800 ? (
+                <React.Fragment>
+                  <Nav.Link href="#features">All(31)</Nav.Link>
+                  <Nav.Link href="#features">Live(5)</Nav.Link>
+                  <Nav.Link href="#features">Ongoing(2)</Nav.Link>
+                  <Nav.Link href="#features">Ended(24)</Nav.Link>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link href="/Apply">Apply</Nav.Link>
+                  <Nav.Link href="/profile">Claim</Nav.Link>
+                  <Nav.Link href="/claim" style={{ paddingBottom: "30px" }}>
+                    My Profile
+                  </Nav.Link>
+                </React.Fragment>
+              )}
+            </Nav>
+            <Nav>
+              <Form className="d-flex">
+                <Form.Control
+                  type="search"
+                  placeholder="Search"
+                  className="me-2"
+                  aria-label="Search"
+                />
+                <Button variant="outline-success" id="search-button">
+                  Search
+                </Button>
+              </Form>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </React.Fragment>
   );
 }

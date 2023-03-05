@@ -8,22 +8,39 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Offcanvas from "react-bootstrap/Offcanvas";
+
 import "../Css/App.css";
+import "../Css/Homepage.css";
+
+import React, { useState, useEffect } from "react";
 
 function Homepage() {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    // update the viewport width state when the window is resized
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div>
-      <Header />
-
       <main id="main">
+        <Header />
         <section class="portfolio section-bg zero-bottom-padding">
           <ul id="portfolio-flters">
-            <li data-filter="*" class="filter-active">
+            <li data-filter="*" class="filter-active .status-tag">
               All(31)
             </li>
-            <li data-filter=".filter-app">Live(5)</li>
-            <li data-filter=".filter-card">Ongoing(2)</li>
-            <li data-filter=".filter-web">Ended(24)</li>
+            <li data-filter=".filter-app status-tag">Live(5)</li>
+            <li data-filter=".filter-card .status-tag">Ongoing(2)</li>
+            <li data-filter=".filter-web .status-tag">Ended(24)</li>
           </ul>
         </section>
 
@@ -57,16 +74,18 @@ function Homepage() {
                       <div class="row g-0">
                         <div class="col-md-3">Reward</div>
                         <div class="col-md-3">Time</div>
-                        <div class="col-md-3">Max Winner</div>
+                        <div class="col-md-3">Winners</div>
                         <div class="col-md-3"></div>
                       </div>
                       <div class="row g-0">
                         <div class="col-md-3">$45000</div>
-                        <div class="col-md-3">12h 33m 24s</div>
+                        <div class="col-md-3">
+                          12h 33m <span class="seconds"> 24s </span>
+                        </div>
                         <div class="col-md-3">32</div>
                         <div class="col-md-3">
                           {" "}
-                          <button type="button" class="btn btn-primary" style={{ width: "80%" }}>
+                          <button type="button" class="btn btn-primary">
                             Enter
                           </button>
                         </div>
