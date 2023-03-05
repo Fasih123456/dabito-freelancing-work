@@ -6,8 +6,10 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { useLocation } from "react-router-dom";
 
 function Header() {
+  const location = useLocation();
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -63,22 +65,47 @@ function Header() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" style={{ marginRight: "0px !important" }}>
-              {viewportWidth > 800 ? (
+              {location.pathname === "/" ? (
+                // display this HTML on the home page
                 <React.Fragment>
-                  <Nav.Link href="#features">All(31)</Nav.Link>
-                  <Nav.Link href="#features">Live(5)</Nav.Link>
-                  <Nav.Link href="#features">Ongoing(2)</Nav.Link>
-                  <Nav.Link href="#features">Ended(24)</Nav.Link>
+                  {viewportWidth > 800 ? (
+                    <React.Fragment>
+                      <Nav.Link href="#features">All(31)</Nav.Link>
+                      <Nav.Link href="#features">Live(5)</Nav.Link>
+                      <Nav.Link href="#features">Ongoing(2)</Nav.Link>
+                      <Nav.Link href="#features">Ended(24)</Nav.Link>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <Nav.Link href="/">Home</Nav.Link>
+                      <Nav.Link href="/Apply">Apply</Nav.Link>
+                      <Nav.Link href="/profile">Claim</Nav.Link>
+                      <Nav.Link href="/claim" style={{ paddingBottom: "30px" }}>
+                        My Profile
+                      </Nav.Link>
+                    </React.Fragment>
+                  )}
+                </React.Fragment>
+              ) : location.pathname === "/Apply" ? (
+                <React.Fragment>
+                  {viewportWidth > 800 ? (
+                    <React.Fragment>
+                      <Nav.Link href="#features">Apply Page</Nav.Link>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <Nav.Link href="/">Home</Nav.Link>
+                      <Nav.Link href="/Apply">Apply</Nav.Link>
+                      <Nav.Link href="/profile">Claim</Nav.Link>
+                      <Nav.Link href="/claim" style={{ paddingBottom: "30px" }}>
+                        My Profile
+                      </Nav.Link>
+                    </React.Fragment>
+                  )}
                 </React.Fragment>
               ) : (
-                <React.Fragment>
-                  <Nav.Link href="/">Home</Nav.Link>
-                  <Nav.Link href="/Apply">Apply</Nav.Link>
-                  <Nav.Link href="/profile">Claim</Nav.Link>
-                  <Nav.Link href="/claim" style={{ paddingBottom: "30px" }}>
-                    My Profile
-                  </Nav.Link>
-                </React.Fragment>
+                // display this HTML on all other pages
+                <h1>Display on all other pages</h1>
               )}
             </Nav>
             <Nav>

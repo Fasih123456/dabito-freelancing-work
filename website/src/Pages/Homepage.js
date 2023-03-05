@@ -1,12 +1,7 @@
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
@@ -34,14 +29,20 @@ function Homepage() {
       <main id="main">
         <Header />
         <section class="portfolio section-bg zero-bottom-padding">
-          <ul id="portfolio-flters">
-            <li data-filter="*" class="filter-active .status-tag">
-              All(31)
-            </li>
-            <li data-filter=".filter-app status-tag">Live(5)</li>
-            <li data-filter=".filter-card .status-tag">Ongoing(2)</li>
-            <li data-filter=".filter-web .status-tag">Ended(24)</li>
-          </ul>
+          {viewportWidth > 800 ? (
+            // display this HTML above 800px
+            <React.Fragment></React.Fragment>
+          ) : (
+            // display this HTML below 800px
+            <ul id="portfolio-flters">
+              <li data-filter="*" class="filter-active .status-tag">
+                All(31)
+              </li>
+              <li data-filter=".filter-app status-tag">Live(5)</li>
+              <li data-filter=".filter-card .status-tag">Ongoing(2)</li>
+              <li data-filter=".filter-web .status-tag">Ended(24)</li>
+            </ul>
+          )}
         </section>
 
         <section id="portfolio" class="portfolio section-bg zero-top-padding">
