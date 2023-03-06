@@ -9,6 +9,8 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
+import Tweet from "../Components/Tweet";
+
 import "../Css/App.css";
 import "../Css/Homepage.css";
 
@@ -52,91 +54,25 @@ function Homepage() {
             </div>
 
             <div class="row portfolio-container" id="featured-tweets-contianer">
-              <div class="card mb-3">
-                <div class="row g-0">
-                  <div
-                    class="col-md-2"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <img
-                      src="../assets/img/profile-img.jpg"
-                      class="img-fluid rounded-start homepage-icon"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="col-md-10">
-                    <div class="card-body">
-                      <h5 class="card-title">@dummy1</h5>
-                      <p class="card-text">Check out this awesome nft</p>
-                      <div class="row g-0">
-                        <div class="col-md-3">Reward</div>
-                        <div class="col-md-3">Time</div>
-                        <div class="col-md-3">Winners</div>
-                        <div class="col-md-3"></div>
-                      </div>
-                      <div class="row g-0">
-                        <div class="col-md-3">$45000</div>
-                        <div class="col-md-3">
-                          12h 33m <span class="seconds"> 24s </span>
-                        </div>
-                        <div class="col-md-3">32</div>
-                        <div class="col-md-3">
-                          {" "}
-                          <button type="button" class="btn btn-primary">
-                            Enter
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Tweet
+                title="Dummy"
+                text="Look at this cool NFT"
+                winner="24"
+                amount="45000"
+                hour="12"
+                min="24"
+                sec="25"
+              />
 
-              <div class="card mb-3">
-                <div class="row g-0">
-                  <div
-                    class="col-md-2"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <img
-                      src="../assets/img/profile-img.jpg"
-                      class="img-fluid rounded-start homepage-icon"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="col-md-10">
-                    <div class="card-body">
-                      <h5 class="card-title">@dummy1</h5>
-                      <p class="card-text">Check out this awesome nft</p>
-                      <div class="row g-0">
-                        <div class="col-md-3">Reward</div>
-                        <div class="col-md-3">Time</div>
-                        <div class="col-md-3">Max Winner</div>
-                        <div class="col-md-3"></div>
-                      </div>
-                      <div class="row g-0">
-                        <div class="col-md-3">$45000</div>
-                        <div class="col-md-3">12h 33m 24s</div>
-                        <div class="col-md-3">32</div>
-                        <div class="col-md-3">
-                          {" "}
-                          <button type="button" class="btn btn-primary" style={{ width: "80%" }}>
-                            Enter
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Tweet
+                title="Dummy"
+                text="Look at this cool NFT"
+                winner="24"
+                amount="45000"
+                hour="12"
+                min="24"
+                sec="25"
+              />
             </div>
           </div>
         </section>
@@ -147,89 +83,25 @@ function Homepage() {
             </div>
 
             <div class="row portfolio-container" style={{ width: "100%" }}>
-              <div class="card mb-3">
-                <div class="row g-0">
-                  <div
-                    class="col-md-2"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <img
-                      src="../assets/img/profile-img.jpg"
-                      class="img-fluid rounded-start homepage-icon"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="col-md-10">
-                    <div class="card-body">
-                      <h5 class="card-title">@dummy1</h5>
-                      <p class="card-text">Check out this awesome nft</p>
-                      <div class="row g-0">
-                        <div class="col-md-3">Reward</div>
-                        <div class="col-md-3">Time</div>
-                        <div class="col-md-3">Max Winner</div>
-                        <div class="col-md-3"></div>
-                      </div>
-                      <div class="row g-0">
-                        <div class="col-md-3">$45000</div>
-                        <div class="col-md-3">12h 33m 24s</div>
-                        <div class="col-md-3">32</div>
-                        <div class="col-md-3">
-                          {" "}
-                          <button type="button" class="btn btn-primary" style={{ width: "80%" }}>
-                            Enter
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Tweet
+                title="Dummy"
+                text="Look at this cool NFT"
+                winner="24"
+                amount="45000"
+                hour="12"
+                min="24"
+                sec="25"
+              />
 
-              <div class="card mb-3">
-                <div class="row g-0">
-                  <div
-                    class="col-md-2"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <img
-                      src="../assets/img/profile-img.jpg"
-                      class="img-fluid rounded-start homepage-icon"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="col-md-10">
-                    <div class="card-body">
-                      <h5 class="card-title">@dummy1</h5>
-                      <p class="card-text">Check out this awesome nft</p>
-                      <div class="row g-0">
-                        <div class="col-md-3">Reward</div>
-                        <div class="col-md-3">Time</div>
-                        <div class="col-md-3">Max Winner</div>
-                        <div class="col-md-3"></div>
-                      </div>
-                      <div class="row g-0">
-                        <div class="col-md-3">$45000</div>
-                        <div class="col-md-3">12h 33m 24s</div>
-                        <div class="col-md-3">32</div>
-                        <div class="col-md-3">
-                          {" "}
-                          <button type="button" class="btn btn-primary" style={{ width: "80%" }}>
-                            Enter
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Tweet
+                title="Dummy"
+                text="Look at this cool NFT"
+                winner="24"
+                amount="45000"
+                hour="12"
+                min="24"
+                sec="25"
+              />
             </div>
           </div>
         </section>

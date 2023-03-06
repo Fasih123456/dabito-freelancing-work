@@ -8,6 +8,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useLocation } from "react-router-dom";
 
+import Navigation from "./Navigation";
+
 function Header() {
   const location = useLocation();
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
@@ -76,14 +78,7 @@ function Header() {
                       <Nav.Link href="#features">Ended(24)</Nav.Link>
                     </React.Fragment>
                   ) : (
-                    <React.Fragment>
-                      <Nav.Link href="/">Home</Nav.Link>
-                      <Nav.Link href="/Apply">Apply</Nav.Link>
-                      <Nav.Link href="/profile">Claim</Nav.Link>
-                      <Nav.Link href="/claim" style={{ paddingBottom: "30px" }}>
-                        My Profile
-                      </Nav.Link>
-                    </React.Fragment>
+                    <Navigation />
                   )}
                 </React.Fragment>
               ) : location.pathname === "/Apply" ? (
@@ -93,14 +88,27 @@ function Header() {
                       <Nav.Link href="#features">Apply Page</Nav.Link>
                     </React.Fragment>
                   ) : (
+                    <Navigation />
+                  )}
+                </React.Fragment>
+              ) : location.pathname === "/claim" ? (
+                <React.Fragment>
+                  {viewportWidth > 800 ? (
                     <React.Fragment>
-                      <Nav.Link href="/">Home</Nav.Link>
-                      <Nav.Link href="/Apply">Apply</Nav.Link>
-                      <Nav.Link href="/profile">Claim</Nav.Link>
-                      <Nav.Link href="/claim" style={{ paddingBottom: "30px" }}>
-                        My Profile
-                      </Nav.Link>
+                      <Nav.Link href="/claim">Claim Page</Nav.Link>
                     </React.Fragment>
+                  ) : (
+                    <Navigation />
+                  )}
+                </React.Fragment>
+              ) : location.pathname === "/profile" ? (
+                <React.Fragment>
+                  {viewportWidth > 800 ? (
+                    <React.Fragment>
+                      <Nav.Link href="/profile">Profile Page</Nav.Link>
+                    </React.Fragment>
+                  ) : (
+                    <Navigation />
                   )}
                 </React.Fragment>
               ) : (

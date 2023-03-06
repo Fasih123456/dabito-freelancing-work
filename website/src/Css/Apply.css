@@ -37,6 +37,10 @@
   }
 
   #first-header {
-    font-size: 100%;
+    font-size: 95%;
+  }
+
+  .special-div {
+    width: 30%;
   }
 }
