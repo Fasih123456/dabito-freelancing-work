@@ -1,15 +1,27 @@
 //This card is only compatible with the homepage Card Componenet, other compatiblity test has not been done
 
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 function Tweet({ title, text, hour, min, sec, winner, amount, id }) {
+  const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY_UNSPLASH;
+  const [imageUrl, setImageUrl] = useState("");
+  const url = `https://api.unsplash.com/photos/random/?client_id=${ACCESS_KEY}`;
+
+  useEffect(() => {
+    axios.get(url).then((response) => {
+      console.log(ACCESS_KEY);
+      console.log(response.data.urls.small);
+      const imageUrl = response.data.urls.small;
+      setImageUrl(imageUrl);
+    });
+  }, []);
+
   return (
     <div class="card mb-3" id={id}>
       <div class="row g-0">
         <div class="col-md-2" id="image-container">
-          <img
-            src="../assets/img/profile-img.jpg"
-            class="img-fluid rounded-start homepage-icon"
-            alt="..."
-          />
+          <img src={imageUrl} class="img-fluid rounded-start homepage-icon" alt="..." />
         </div>
         <div class="col-md-10">
           <div class="card-body">

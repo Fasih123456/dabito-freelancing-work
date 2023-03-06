@@ -28,7 +28,7 @@ function Header() {
           <div class="profile">
             <img src="../assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle" />
             <h1 class="text-light">
-              <a href="index.html">Alex Smith</a>
+              <a href="index.html">Robert California</a>
             </h1>
           </div>
 
