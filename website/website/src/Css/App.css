@@ -1,0 +1,43 @@
+/* This CSS will affect all pages */
+
+.zero-bottom-padding {
+  padding-bottom: 0px;
+}
+
+.zero-top-padding {
+  padding-top: 0px;
+}
+
+#featured-tweets-contianer {
+  width: 100%;
+}
+
+.homepage-icon {
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+/*Mobile view */
+@media screen and (max-width: 769px) {
+  .homepage-icon {
+    width: 0%;
+  }
+
+  .section-container {
+    max-width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.col-md-3 {
+  flex-basis: calc(33.33% - 10px);
+  margin-bottom: 10px;
+}
