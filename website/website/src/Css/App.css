@@ -41,3 +41,38 @@
   flex-basis: calc(33.33% - 10px);
   margin-bottom: 10px;
 }
+
+/* Add styles for featured tweets */
+.isFeatured {
+  background-color: gold; /* Set background color to gold */
+  border: 3px solid green;
+  border-radius: 10px; /* Add border radius */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add a box shadow */
+
+  margin-bottom: 20px; /* Add margin bottom */
+  transition: background-color 0.3s ease-in-out; /* Add transition effect */
+}
+
+.isFeatured:hover {
+  background-color: green; /* Change background color to white on hover */
+}
+
+.isFeatured h5 {
+  margin: 0;
+}
+
+.isFeatured p {
+  margin: 5px 0;
+}
+
+.isCommunity {
+  /* Add your styles for isCommunity here */
+  /* Example styles */
+  border: 3px solid purple;
+  background-color: lightblue;
+  font-style: italic;
+}
+
+.card-body {
+  border: 2px black solid;
+}

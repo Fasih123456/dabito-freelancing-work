@@ -1,80 +1,111 @@
 //This card is only compatible with the homepage Card Componenet, other compatiblity test has not been done
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import React from "react";
 import moment from "moment";
-import { Row, Col, Modal, Button, Form } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
+import { myContext } from "./OAuthContext";
+import UserModal from "./UserModal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
 
-function refineTime(time) {
-  const refinedTime = time ? time.slice(1, -2) : "";
+function Tweet({
+  id,
+  title,
+  text,
+  winner,
+  amount,
+  creationTime,
+  expiryTime,
+  edit,
+  requirements,
+  isFeatured,
+  isCommunity,
+  verify,
+}) {
+  if (requirements) {
+    console.log(requirements.mustComment);
+  }
 
-  return refinedTime;
-}
+  const userObject = useContext(myContext);
 
-function Tweet({ identifies, title, text, time, winner, amount, key, edit, userid }) {
-  const refinedTime = time ? refineTime(time) : "";
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editTweet, setEditTweet] = useState({
-    userid: "",
-    title: "",
-    reward: "",
-    time: "",
-    winners: "",
-    targetTweetId: "",
-  });
+  const deleteTweet = () => {
+    axios.delete(`http://localhost:3001/api/deleteTweet/${id}`);
 
-  console.log(refinedTime);
-  const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY_UNSPLASH;
-  const [imageUrl, setImageUrl] = useState("");
-  const url = `https://api.unsplash.com/photos/random/?client_id=${ACCESS_KEY}`;
-
-  const deleteTweet = (tweetId) => {
-    axios.delete(`http://localhost:3001/api/deleteTweet/${tweetId}`);
-  };
-
-  const timeLeft = moment.duration(moment(time, "YYYY-MM-DDTHH:mm:ss.SSS").diff(moment()));
-
-  console.log(timeLeft);
-
-  // Get the number of days, hours, minutes, and seconds left
-  const day = Math.floor(timeLeft.asDays());
-  const hour = timeLeft.hours();
-  const min = timeLeft.minutes();
-
-  const handleCloseEditModal = () => setShowEditModal(false);
-  const handleShowEditModal = (user) => {
-    setShowEditModal(true);
-  };
-
-  const handleModalSaveChanges = () => {
-    handleSaveChanges(editTweet, identifies, userid);
-    handleCloseEditModal();
-    //handleSaveChanges(currentUser);
-  };
-
-  const handleSaveChanges = (tweetdata, tweetid, userid) => {
-    console.log(tweetdata, tweetid, userid);
-    axios.put(`http://localhost:3001/api/updateTweet/${tweetid}`, {
-      title: tweetdata.title,
-      reward: tweetdata.reward,
-      time: tweetdata.time,
-      winners: tweetdata.winners,
-      userid: userid,
+    toast.success("Tweet successfully deleted!", {
+      onClose: () => {
+        window.location.href = "/";
+      },
     });
-    // code to send request to server to update user data with currentUser state
   };
+
+  const handleAddModal = () => setShowAddModal(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const hours = moment(expiryTime).diff(moment(), "hours");
+  const minutes = moment(expiryTime).diff(moment(), "minutes") - hours * 60;
+  const seconds = moment(expiryTime).diff(moment(), "seconds") - minutes * 60 - hours * 3600;
+
+  const verifyRequirements = (id) => {
+    console.log(id);
+    axios
+      .get(`http://localhost:3001/usersfollowing/${userObject.id}?tweetId=${id}`) // Pass tweetId as a query parameter in the URL
+      .then((response) => {
+        // Handle the response
+        console.log("Response:", response);
+        const message = response.data.message;
+
+        // Check if verification is complete based on API response
+        const isVerificationComplete = response.data.message === "Verification complete";
+
+        if (isVerificationComplete) {
+          // Show success toast
+          toast.success("Verification complete");
+        } else {
+          // Show failure toast
+          toast.error("Verification not completed");
+        }
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error("Error verifying requirements:", error);
+      });
+  };
+
+  const enterTweet = () => {
+    axios.post("http://localhost:3001/api/accept", {
+      raider_id: userObject.id,
+      accepted_tweet_id: id,
+    });
+
+    toast.success(
+      "Tweet successfully added! You can see your active tweets in My Profile. Make sure to fulfill the requirements to be eligible for the reward!",
+      {
+        onClose: () => {
+          // You can update the URL to the correct path of the user's profile page
+          window.location.href = "/profile";
+        },
+      }
+    );
+  };
+
+  const notify = () => toast("Wow so easy!");
 
   return (
-    <div class="card mb-3" id={key}>
+    <div
+      class="card mb-3"
+      id={id}
+      style={{ marginTop: "20px" }}
+      className={`row g-0 ${isFeatured ? "isFeatured" : ""} ${isCommunity ? "isCommunity" : ""}`}
+    >
+      <ToastContainer />
       <div class="row g-0">
-        <div class="col-md-2" id="image-container">
-          <img src={imageUrl} class="img-fluid rounded-start homepage-icon" alt="..." />
-        </div>
-        <div class="col-md-10">
+        <div class="col-md-12">
           <div class="card-body">
-            <h5 class="card-title">@{title}</h5>
-            <p class="card-text">{text}</p>
+            <h4 class="card-title">@{title}</h4>
+            <h5 class="card-text">{text}</h5>
+
             <div class="row g-0">
               <div class="col-md-3">Reward</div>
               <div class="col-md-3">Time</div>
@@ -84,137 +115,92 @@ function Tweet({ identifies, title, text, time, winner, amount, key, edit, useri
             <div class="row g-0">
               <div class="col-md-3">${winner}</div>
               <div class="col-md-3">
-                {day}d {hour}h <span class="seconds"> {min}m </span>
+                {hours}h {minutes}m<span class="seconds">{seconds}s </span>
               </div>
               <div class="col-md-3">{amount}</div>
               {edit ? (
                 <React.Fragment>
-                  <div class="col-md-3">
+                  <div className="col-md-3">
                     <button
                       type="button"
-                      class="btn btn-primary"
-                      onClick={(e) => handleShowEditModal()}
+                      className="btn btn-primary"
+                      onClick={(e) => handleAddModal()}
                     >
                       Edit
                     </button>
                   </div>
-                  <div class="col-md-3">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      onClick={(e) => deleteTweet(identifies)}
-                    >
+                  <div className="col-md-3">
+                    <button type="button" className="btn btn-danger" onClick={(e) => deleteTweet()}>
                       Delete
                     </button>
                   </div>
                 </React.Fragment>
               ) : (
-                <div class="col-md-3">
-                  <button type="button" class="btn btn-primary">
-                    Enter
-                  </button>
+                <div className="col-md-3">
+                  {verify ? (
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={(e) => verifyRequirements(id)}
+                    >
+                      Verify Requirements
+                    </button>
+                  ) : (
+                    <button type="button" className="btn btn-primary" onClick={(e) => enterTweet()}>
+                      Enter
+                    </button>
+                  )}
                 </div>
               )}
+            </div>
+            <div class="row g-0">
+              <div class="col-md-12">
+                <hr />
+              </div>
+            </div>
+            <div class="row g-0">
+              <div class="col-md-3">Requirements</div>
+              <div class="col-md-9">
+                {requirements && (
+                  <ul>
+                    {requirements.mustComment && <li>Must comment</li>}
+                    {requirements.mustForward && <li>Must forward</li>}
+                    {requirements.mustLikeLink && <li>Must like link</li>}
+                    {requirements.mustHaveMinFollowers && (
+                      <li>Must have minimum followers: {requirements.minimumFollowers}</li>
+                    )}
+                    {requirements.mustHaveMinComment && (
+                      <li>Must have minimum comment count: {requirements.commentCount}</li>
+                    )}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <Modal show={showEditModal} onHide={handleCloseEditModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* Replace with your own form elements */}
-          <Form>
-            <Form.Group controlId="formBasicName">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Tweet Title"
-                onChange={(e) => {
-                  setEditTweet({
-                    ...editTweet,
-                    title: e.target.value,
-                  });
-                }}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicName">
-              <Form.Label>Reward Amount</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Reward Amount"
-                onChange={(e) => {
-                  setEditTweet({
-                    ...editTweet,
-                    winners: e.target.value,
-                  });
-                }}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicName">
-              <Form.Label>Valid Time</Form.Label>
-              <Form.Control
-                as="select"
-                onChange={(e) => {
-                  setEditTweet({
-                    ...editTweet,
-                    time: e.target.value,
-                  });
-                }}
-              >
-                <option value="">Select time</option>
-                <option value="1">1 day</option>
-                <option value="2">2 days</option>
-                <option value="3">3 days</option>
-                <option value="4">4 days</option>
-                <option value="5">5 days</option>
-                <option value="6">6 days</option>
-                <option value="7">7 days</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicType">
-              <Form.Label>Number Of Winners</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Number Of Winners"
-                onChange={(e) => {
-                  setEditTweet({
-                    ...editTweet,
-                    reward: e.target.value,
-                  });
-                }}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicType">
-              <Form.Label>Tweet ID</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Target Tweet Id"
-                onChange={(e) => {
-                  setNewTweet({
-                    ...newTweet,
-                    targetTweetId: e.target.value,
-                  });
-                }}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary danger" onClick={handleCloseEditModal}>
-            Discard
-          </Button>
-          <Button variant="primary" onClick={handleModalSaveChanges}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <UserModal
+        handleClass={handleAddModal}
+        setShowAddModal={setShowAddModal}
+        showAddModal={showAddModal}
+      />
     </div>
   );
 }
+
+/*
+                <ul>
+                  {requirements.mustComment && <li>Must comment</li>}
+                  {requirements.mustForward && <li>Must forward</li>}
+                  {requirements.mustLikeLink && <li>Must like link</li>}
+                  {requirements.mustHaveMinFollowers && (
+                    <li>Must have minimum followers: {requirements.minimumFollowers}</li>
+                  )}
+                  {requirements.mustHaveMinComment && (
+                    <li>Must have minimum comment count: {requirements.commentCount}</li>
+                  )}
+                </ul>
+*/
 
 export default Tweet;

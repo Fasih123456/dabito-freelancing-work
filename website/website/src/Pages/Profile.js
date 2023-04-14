@@ -3,6 +3,7 @@ import React from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import EnteredTweets from "../Components/EnteredTweets";
 
 import "../Css/App.css";
 import "../Css/Section.css";
@@ -21,6 +22,7 @@ function Profile() {
           </Row>
           <Row>This is the wallet section</Row>
         </Container>
+        <EnteredTweets />
         <Footer />
       </main>
     </React.Fragment>

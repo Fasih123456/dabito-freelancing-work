@@ -5,15 +5,13 @@ const router = express.Router();
 const session = require("express-session");
 const passport = require("passport");
 const TwitterStrategy = require("passport-twitter").Strategy;
+const Users = require("../models/Users");
 require("dotenv").config();
 
 const TWITTER_API_KEY = process.env.TWITTER_API_KEY;
 const TWITTER_API_SECRET_KEY = process.env.TWITTER_API_SECRET_KEY;
-const TWITTER_CONSUMER_KEY = "BIH8KotWI2JlTJML8CKllMj6S";
-const TWITTER_CONSUMER_SECRET = "2RYzsLWTOqO9RwN0XJGmd40q1i7v6Jc0ylkz47LTrS7FaJHIV2";
-
-console.log(TWITTER_CONSUMER_KEY);
-console.log(TWITTER_CONSUMER_SECRET);
+const TWITTER_CONSUMER_KEY = "MFhTe8ojilLTveO9VElA0lX5o";
+const TWITTER_CONSUMER_SECRET = "L2pY0kHYDaYXqJ8Ew6E8fhVUq6ZEA6wHv901JPqW6n9aWT9U7d";
 
 router.use(
   session({
@@ -31,12 +29,16 @@ passport.use(
     {
       consumerKey: TWITTER_CONSUMER_KEY,
       consumerSecret: TWITTER_CONSUMER_SECRET,
-      callbackURL: "http://localhost:3001/oauth/twitter/callback",
+      callbackURL: "http://localhost:3001/auth/twitter/callback",
     },
     function (token, tokenSecret, profile, cb) {
-      console.log(`Creating user ${profile.id}...`);
+      let twitterId = profile.id;
+      let newId = twitterId.toString().slice(0, 8);
+
+      let User = new Users(newId, profile.username, 0);
+      User.findOrCreate();
       // Set the profile object on req.user
-      cb(null, { id: profile.id, profile: profile });
+      cb(null, profile);
     }
   )
 );
@@ -57,16 +59,17 @@ passport.deserializeUser(function (obj, done) {
   done(null, obj);
 });
 
-router.get("/oauth/twitter", async (req, res, next) => {
+router.get("/auth/twitter", async (req, res, next) => {
   passport.authenticate("twitter")(req, res, next);
 });
 
 // Route to return the profile ID
 router.get("/api/profile", (req, res) => {
-  res.json({ profileId: req.user });
+  //console.log(req.session.user);
+  res.send(req.session.user);
 });
 
-router.get("/logout", (req, res) => {
+router.get("/auth/logout", (req, res) => {
   req.logout(() => {
     // Your callback logic goes here
     res.redirect("http://localhost:3000");
@@ -74,11 +77,13 @@ router.get("/logout", (req, res) => {
 });
 
 router.get(
-  "/oauth/twitter/callback",
+  "/auth/twitter/callback",
   async (req, res, next) => {
     passport.authenticate("twitter", { failureRedirect: "/" })(req, res, next);
   },
   function (req, res) {
+    // Save user information to session
+    req.session.user = req.user;
     res.redirect("http://localhost:3000");
   }
 );
