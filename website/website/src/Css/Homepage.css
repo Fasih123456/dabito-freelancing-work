@@ -1,4 +1,5 @@
 /* This CSS will only effect the Homepage.js page */
+
 ul {
   /* set your desired spacing between list items */
   margin: 0;
@@ -14,22 +15,155 @@ button {
   width: 80%;
 }
 
+.section-bg {
+  background: var(--secondary);
+}
 .me-auto {
   margin-right: 10px !important;
 }
-
-.navbar-nav {
-  width: 100%;
+.navbar{
+  height: 7vh;
+  background-color: var(--primary) !important;
+  
+  
+}
+.n{
+  border-bottom: 3px solid var(--fourth);
+}
+.con1{
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 5vw;
+}
+.nav{
+  width: fit-content !important;
+}
+.nav-link{
+  color: var(--secondary) !important;
+  font-family: 'Poppins', sans-serif;
+}
+.navbar-collapse{
+  justify-content: space-between;
 }
 
+#main{
+  margin-left: 25vw;
+  
+}
+.header{
+  height: 100vh;
+  top: 7vh;
+  border-right: 3px solid var(--fourth);
+  width: 25vw;
+  left: 0 ;
+  position: fixed;
+
+bottom: 0;
+
+transition: all ease-in-out 0.5s;
+z-index: 9997;
+transition: all 0.5s;
+padding: 0 15px;
+background: #040b14;
+overflow-y: auto;
+}
+.navbar-nav {
+  width: fit-content;
+}
+.navheading ul{
+ padding-left: 0;
+ 
+}
+.navheading li{
+  list-style: none;
+  padding: 0.5vh 0;
+  
+  border-radius: 2rem;
+  
+  
+
+}
+.navheading li:hover{
+  background-color: rgba(255, 255, 255, 0.116);
+  
+
+}
+.navheading a{
+  font-size: 1.8rem;
+  color: var(--secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  
+  
+}
+.navheading a span{
+  margin-left: 1vw;
+  
+  
+  
+}
+.navheading a i{
+  font-size: 30px;
+  
+}
+.profile{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+.notloggedin{
+  font-size: 1.5rem;
+  color: rgb(189, 189, 189);
+}
+.loginbtn{
+  background-color: transparent;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  height: 5vh;
+  border-radius: 2rem;
+  font-size: 1.5rem;
+}
+.loginbtn:hover{
+  background-color: var(--secondary);
+  
+  color: var(--primary);
+}
+.headerdiv{
+  justify-content: space-between;
+  height: 90%;
+}
 form {
   width: 100%;
 }
 
 #search-button {
-  width: 33%;
-}
+  width: 100%;
+  height: 4.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  color: var(--fourth);
+  border-color: var(--fourth);
+  font-family: 'Poppins', sans-serif;
 
+}
+#search-button:hover{
+  color: var(--third);
+  border-color: var(--third);
+  background-color: var(--fourth);
+}
+.section-title h2 {
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+.topnav:hover{
+  color: var(--fourth) !important;
+}
 #name-title {
   display: none;
 }
@@ -40,22 +174,244 @@ form {
   justify-content: center;
   padding-top: 10px;
 }
+.hamburger{
+  display: none;
+
+}
+#r{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 /* media query for smaller screens */
-@media screen and (max-width: 800px) {
-  li {
-    padding-left: 0px !important;
+@media (max-width:600px)  {
+  #responsive{
+    display: none;
   }
-
-  #name-title {
-    display: inline !important;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .seconds {
+  .nav{
     display: none !important;
+  }
+  .hamburger{
+    display: block;
+    
+  }
+  #main{
+    margin-left: 0;
+  }
+  .header {
+    width: 100vw;
+    left: -100vw;
+  }
+  #r{
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+  .navbar{
+    height: 9vh;
+    
+    
+    
+  }
+  .header{
+    
+    top: 9vh;
+    
+  }
+  #search-button {
+    height: 90%;
+  }
+  .loginbtn{
+    height: 7vh;
+  }
+  .headerdiv{
+    height: 85%;
+  }
+
+}
+@media (min-width:600px) and (max-width: 1000px) {
+  #responsive{
+    display: none;
+  }
+  .nav{
+    display: none !important;
+  }
+  .hamburger{
+    display: block;
+    
+  }
+  #main{
+    margin-left: 0;
+  }
+  .header {
+    
+    width: 100vw;
+    
+    
+  }
+  
+  #r{
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+  .navbar{
+    height: 9vh;
+    
+    
+    
+  }
+  .header{
+    
+    top: 9vh;
+    
+  }
+  #search-button {
+    height: 90%;
+  }
+  .loginbtn{
+    height: 7vh;
+  }
+  .headerdiv{
+    height: 85%;
+  }
+  .navheading ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+  .navheading li {
+    width: fit-content;
+    
+  }
+  .navheading li a{
+    font-size: 3rem;
+    
+  }
+
+}
+@media (min-width: 1000px) and (max-width: 1300px)  {
+  .navbar{
+    height: 9vh;
+    
+    
+    
+  }
+  .header{
+    width: 30vw;
+    top: 9vh;
+    
+
+  }
+  .headerdiv{
+    height: 85%;
+  }
+  #main{
+    margin-left: 30vw;
+    
+  }
+  #search-button {
+    height: 5vh;
+  }
+  .loginbtn{
+    height: 7vh;
+  }
+}
+@media (min-width: 1200px) and (max-width: 1600px)  {
+  .navbar{
+    height: 8vh;
+    
+    
+    
+  }
+  .header{
+    
+    top: 8vh;
+    
+  }
+  #search-button {
+    height: 5vh;
+  }
+  .loginbtn{
+    height: 7vh;
+  }
+}
+@media (min-width: 2560px) and (max-width: 3839px)  {
+  
+  .topnav{
+    font-size: 2em;
+    margin-left: 1vw;
+  }
+  #search-button {
+    height: 5vh;
+    width: 15vw;
+    border-radius: 5rem;
+    font-size: 2em;
+  }
+  .navheading a {
+    font-size: 2em;
+  }
+  .navheading li {
+    border-radius: 5rem;
+  }
+  .loginbtn{
+    height: 7vh;
+    border-radius: 5rem;
+    font-size: 2em;
+  }
+  #main{
+    margin-left: 5vw;
+  }
+  .section-title h2 {
+    font-size: 4em;
+  }
+  .section-title h2::after {
+    
+    width: 150px;
+    height: 4px;
+    
+  }
+}
+@media (min-width: 3840px) {
+  .topnav{
+    font-size: 2em;
+    margin-left: 1vw;
+  }
+  #search-button {
+    height: 5vh;
+    width: 15vw;
+    border-radius: 5rem;
+    font-size: 2em;
+  }
+  .navheading a {
+    font-size: 2em;
+  }
+  .navheading li {
+    border-radius: 5rem;
+  }
+  .loginbtn{
+    height: 7vh;
+    border-radius: 5rem;
+    font-size: 2em;
+  }
+  #main{
+    margin-left: -10vw;
+  }
+  .section-title h2 {
+    font-size: 4em;
+  }
+  .section-title h2::after {
+    
+    width: 150px;
+    height: 4px;
+    
   }
 }

@@ -1,9 +1,17 @@
 /* This CSS will affect all pages */
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+:root {
+  --primary: #040B14;
+  --secondary: #effaff;
+  --third:#023848;
+  --fourth:#0099ff;
+}
 .zero-bottom-padding {
   padding-bottom: 0px;
 }
-
+body{
+  background-color: var(--secondary) !important;
+}
 .zero-top-padding {
   padding-top: 0px;
 }
@@ -17,7 +25,12 @@
   max-height: 100%;
   vertical-align: middle;
 }
-
+.navheading{
+  font-size: 30px;
+}
+#footer{
+  padding: 0;
+}
 /*Mobile view */
 @media screen and (max-width: 769px) {
   .homepage-icon {

@@ -7,7 +7,10 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useLocation } from "react-router-dom";
-
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
+import { CgProfile,CgFile } from 'react-icons/cg';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { AiOutlineHome,AiOutlineClose } from 'react-icons/ai';
 import Navigation from "./Navigation";
 import { myContext } from "./OAuthContext";
 
@@ -17,6 +20,11 @@ import axios, { AxiosResponse } from "axios";
 
 function Header({ location, profileId }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [hide, setHide] = useState(false)
+  
+  const onHide = () => {
+    setHide(!hide)
+  }
 
   const userObject = useContext(myContext);
 
@@ -50,62 +58,9 @@ function Header({ location, profileId }) {
   //TODO: add functinality to change the .active class name on the links
   return (
     <React.Fragment>
-      <header id="header">
-        <div class="d-flex flex-column">
-          <div class="profile">
-            {userObject.id ? (
-              <React.Fragment>
-                <img src={userObject.photos[0].value} alt="" class="img-fluid rounded-circle" />
-
-                <h1 class="text-light">
-                  <a href="/">{userObject.displayName}</a>
-                </h1>
-                <button onClick={twitterLogout}>Logout</button>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <p>You are not loged in!</p>
-                <button onClick={twitterLogin}>Login</button>
-              </React.Fragment>
-            )}
-          </div>
-
-          <nav id="navbar" class="nav-menu navbar">
-            <ul>
-              <li>
-                <a href="/" class="nav-link scrollto active">
-                  <i class="bx bx-home"></i> <span>Home</span>
-                </a>
-              </li>
-              <li>
-                <a href="/Apply" class="nav-link scrollto">
-                  <i class="bx bx-user"></i> <span>Apply</span>
-                </a>
-              </li>
-              <li>
-                <a href="/claim" class="nav-link scrollto">
-                  <i class="bx bx-file-blank"></i> <span>Claim</span>
-                </a>
-              </li>
-              <li>
-                <a href="/profile" class="nav-link scrollto">
-                  <i class="bx bx-book-content"></i> <span>My Profile</span>
-                </a>
-              </li>
-              {hasAdminPrivileges && (
-                <li>
-                  <a href="/admin" className="nav-link scrollto">
-                    <i className="bx bx-book-content"></i> <span>Admin Panel</span>
-                  </a>
-                </li>
-              )}
-            </ul>
-          </nav>
-        </div>
-      </header>
-      <main id="main">
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Container>
+      <main id="topbar">
+        <Navbar collapseOnSelect expand="lg" className="n" >
+          <div className="con1">
             <Navbar.Brand href="#home" id="name-title">
               {userObject.id ? (
                 <React.Fragment>
@@ -120,19 +75,21 @@ function Header({ location, profileId }) {
                 </React.Fragment>
               )}
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" /> */}
 
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="me-auto" style={{ marginRight: "0px !important" }}>
+            <div id="r">
+              <Nav className="nav" style={{ marginRight: "0px !important" }}>
+              
                 {location === "/" ? (
                   // display this HTML on the home page
                   <React.Fragment>
                     {viewportWidth > 800 ? (
                       <React.Fragment>
-                        <Nav.Link href="#features">All(31)</Nav.Link>
-                        <Nav.Link href="#features">Live(5)</Nav.Link>
-                        <Nav.Link href="#features">Ongoing(2)</Nav.Link>
-                        <Nav.Link href="#features">Ended(24)</Nav.Link>
+                        <Nav.Link className="topnav" href="#features">All(31)</Nav.Link>
+                        <Nav.Link className="topnav" href="#features">Live(5)</Nav.Link>
+                        <Nav.Link className="topnav" href="#features">Ongoing(2)</Nav.Link>
+                        <Nav.Link className="topnav" href="#features">Ended(24)</Nav.Link>
+
                       </React.Fragment>
                     ) : (
                       <Navigation />
@@ -172,7 +129,13 @@ function Header({ location, profileId }) {
                   // display this HTML on all other pages
                   <h1>Display on all other pages</h1>
                 )}
+                
               </Nav>
+              <div className="hamburger" onClick={ () => { onHide()} }>
+                <GiHamburgerMenu  size={"2rem"} color={ "var(--secondary)"} style={{ display: hide === false ? 'block' : 'none' }}/>
+                <AiOutlineClose  size={"2rem"} color={ "var(--secondary)"} style={{ display: hide === false ? 'none' : 'block' }}/>
+                
+            </div>
               <Nav>
                 <Form className="d-flex">
                   <Button variant="outline-info" id="search-button" href="/tweets">
@@ -180,10 +143,119 @@ function Header({ location, profileId }) {
                   </Button>
                 </Form>
               </Nav>
-            </Navbar.Collapse>
-          </Container>
+            </div>
+          </div>
         </Navbar>
       </main>
+      <header  className="header" style={{ left: hide === false ? '-100vw' : '0' }}>
+        <div class="d-flex flex-column headerdiv">
+          
+
+          <nav id="navbar" class="navheading navbar">
+            <ul>
+              <li >
+                <a href="/" class="nav-link scrollto active" onClick={ () => { onHide()} }>
+                  <AiOutlineHome/> <span>Home</span>
+                </a>
+              </li>
+              <li>
+                <a href="/Apply" class="nav-link scrollto" onClick={ () => { onHide()} }>
+                <CgProfile/> <span>Apply</span>
+                </a>
+              </li>
+              <li>
+                <a href="/claim" class="nav-link scrollto" onClick={ () => { onHide()} }>
+                  <CgFile/> <span>Claim</span>
+                </a>
+              </li>
+              <li>
+                <a href="/profile" class="nav-link scrollto" onClick={ () => { onHide()} }>
+                  <CgProfile/> <span>My Profile</span>
+                </a>
+              </li>
+              {hasAdminPrivileges && (
+                <li>
+                  <a href="/admin" className="nav-link scrollto">
+                    <MdOutlineAdminPanelSettings/> <span>Admin Panel</span>
+                  </a>
+                </li>
+              )}
+            </ul>
+          </nav>
+          <div class="profile">
+            {userObject.id ? (
+              <React.Fragment>
+                <img src={userObject.photos[0].value} alt="" class="img-fluid rounded-circle" />
+
+                <h1 class="text-light">
+                  <a href="/">{userObject.displayName}</a>
+                </h1>
+                <button className="loginbtn" onClick={twitterLogout}>Logout</button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <p className="notloggedin">You are not loged in!</p>
+                <button className="loginbtn" onClick={twitterLogin}>Login</button>
+              </React.Fragment>
+            )}
+          </div>
+        </div>
+      </header>
+      <header id="responsive" className="header">
+        <div class="d-flex flex-column headerdiv">
+          
+
+          <nav id="navbar" class="navheading navbar">
+            <ul>
+              <li >
+                <a href="/" class="nav-link scrollto active">
+                  <AiOutlineHome/> <span>Home</span>
+                </a>
+              </li>
+              <li>
+                <a href="/Apply" class="nav-link scrollto">
+                <CgProfile/> <span>Apply</span>
+                </a>
+              </li>
+              <li>
+                <a href="/claim" class="nav-link scrollto">
+                  <CgFile/> <span>Claim</span>
+                </a>
+              </li>
+              <li>
+                <a href="/profile" class="nav-link scrollto">
+                  <CgProfile/> <span>My Profile</span>
+                </a>
+              </li>
+              {hasAdminPrivileges && (
+                <li>
+                  <a href="/admin" className="nav-link scrollto">
+                    <MdOutlineAdminPanelSettings/> <span>Admin Panel</span>
+                  </a>
+                </li>
+              )}
+            </ul>
+          </nav>
+          <div class="profile">
+            {userObject.id ? (
+              <React.Fragment>
+                <img src={userObject.photos[0].value} alt="" class="img-fluid rounded-circle" />
+
+                <h1 class="text-light">
+                  <a href="/">{userObject.displayName}</a>
+                </h1>
+                <button className="loginbtn" onClick={twitterLogout}>Logout</button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <p className="notloggedin">You are not loged in!</p>
+                <button className="loginbtn" onClick={twitterLogin}>Login</button>
+              </React.Fragment>
+            )}
+          </div>
+        </div>
+      </header>
+      
     </React.Fragment>
   );
 }
