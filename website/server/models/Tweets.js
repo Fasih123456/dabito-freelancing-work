@@ -92,4 +92,15 @@ module.exports = class Tweets {
   static getTweetIdFromTweeterId(tweeterId) {
     return db.execute("SELECT tweeter_id FROM tweets WHERE tweet_id  = ?", [tweeterId]);
   }
+
+  static getTweetById(tweetId) {
+    return db.execute("SELECT * FROM tweets WHERE tweet_id = ?", [tweetId]).then((result) => {
+      // Extract rows from result object
+      const rows = result[0];
+      //console.log(rows);
+
+      // Return rows (data) only
+      return rows;
+    });
+  }
 };

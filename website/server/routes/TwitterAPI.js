@@ -1,17 +1,33 @@
 const axios = require("axios");
 const express = require("express");
 const router = express.Router();
+const Tweets = require("../models/Tweets");
 
 //This function check
 router.get("/usersfollowing/:id", async (req, res) => {
   const id = req.params.id; // Get the user ID from the request parameters
-  const tweetId = req.query.tweetId; // Get the tweetId from the query parameters
+  const tweetId = 164 + req.query.tweetId; // Get the tweetId from the query parameters
   const minimumFollowerCount = req.query.minimumFollowerCount || 0; // Get the minimumFollowerCount from the query parameters
   const hasCommentRequirements = req.query.hasCommentRequirements || false; // Get the hasCommentRequirements from the query parameters
   const hasLikedTweet = req.query.hasLikedTweet || false; // Get the hasLikedTweet from the query parameters
 
-  console.log(id);
-  console.log(tweetId);
+  console.log("params", req.params);
+
+  const shortTweetId = tweetId.slice(3); //All our database tweets are stored as shortTweets
+
+  console.log("tweetId", shortTweetId);
+
+  //8419084504272897
+
+  const Tweet = await Tweets.getTweetById(shortTweetId);
+  console.log(Tweet);
+
+  const Requirements = Tweet[0].requirements;
+  let message = "All requirements met";
+
+  //console.log(id);
+  //console.log(tweetId);
+  console.log(`https://api.twitter.com/2/tweets/${tweetId}/retweeted_by`);
 
   let isVerified = false;
 
@@ -19,51 +35,126 @@ router.get("/usersfollowing/:id", async (req, res) => {
     "AAAAAAAAAAAAAAAAAAAAAFtUmAEAAAAAFiQy1WXpS%2BezO4LoW1Kel5uO4sE%3D3Ipt0uQnEE82eeXMUnlEPp4tidYhYL1Likop5SJaTYkN167oSw";
 
   try {
-    //Check if user has commented on tweet
-    const response = await axios.get(`https://api.twitter.com/2/tweets/${tweetId}/retweeted_by`, {
-      headers: {
-        Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
-        "Content-Type": "application/json",
-        "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
-      },
-    });
-    //If not send back error message
-    isVerified = response.data.data.some((user) => user.id === id);
+    let response;
 
-    if (!isVerified && hasCommentRequirements) {
-      res.status(200).json({ message: "Not commented on tweet" });
-    }
-    //If yes then check if user has enough followers
-    response = await axios.get(`https://api.twitter.com/2/users/${id}/followers`, {
-      headers: {
-        Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
-        "Content-Type": "application/json",
-        "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
-      },
-    });
+    if (Requirements.mustHaveMinFollowers == true) {
+      console.log(`Followers requirement of ${Requirements.minFollowers}`);
+      //If yes then check if user has enough followers
+      response = await axios.get(`https://api.twitter.com/2/users/${id}/followers`, {
+        headers: {
+          Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
+          "Content-Type": "application/json",
+          "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
+        },
+      });
 
-    isVerified = response.data.meta.result_count >= minimumFollowerCount;
-    //If not send back error message
-    if (!isVerified) {
-      res.status(200).json({ message: "Not enough followers" });
-    }
-
-    //If yes check if user has liked the Tweet
-    response = await axios.get(`https://api.twitter.com/2/tweets/${tweetId}/liking_users`, {
-      headers: {
-        Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
-        "Content-Type": "application/json",
-        "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
-      },
-    });
-
-    isVerified = response.data.data.some((user) => user.id === id);
-
-    if (!isVerified && hasLikedTweet) {
-      res.status(200).json({ message: "Not liked tweet" });
+      isVerified = response.data.meta.result_count >= Requirements.minimumFollowers;
+      //If not send back error message
+      if (!isVerified) {
+        message = "Not enough followers";
+      }
     } else {
-      res.status(200).json({ message: "All requirements met" });
+      console.log("No followers requirement");
     }
+
+    console.log(tweetId);
+
+    if (Requirements.mustLikeLink == true) {
+      console.log("Like requirement");
+      //If yes check if user has liked the Tweet
+      response = await axios.get(`https://api.twitter.com/2/tweets/${tweetId}/liking_users`, {
+        headers: {
+          Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
+          "Content-Type": "application/json",
+          "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
+        },
+      });
+
+      console.log(response.data);
+
+      if (response.data.meta.result_count == 0) {
+        isVerified = false;
+      } else {
+        isVerified = response.data.data.some((user) => user.id == id);
+      }
+
+      console.log(id);
+
+      if (!isVerified) {
+        message = "Not liked tweet";
+      }
+    } else {
+      console.log("No like requirement");
+    }
+
+    if (Requirements.mustQuoted == true) {
+      //The comment is actually for Qouted tweets
+      console.log("Comment requirement");
+      //Check if user has commented on tweet
+      response = await axios.get(
+        `https://api.twitter.com/2/tweets/${tweetId}/quote_tweets?max_results=55`,
+        {
+          headers: {
+            Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
+            "Content-Type": "application/json",
+            "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
+          },
+        }
+      );
+
+      let foundUser = false;
+      while (!foundUser && response.data.meta.next_token) {
+        const quoteTweets = response.data.data;
+        const next_token = response.data.meta.next_token || "";
+        foundUser = quoteTweets.some((quoteTweet) => quoteTweet.id === id);
+
+        if (!foundUser && next_token !== "") {
+          response = await axios.get(
+            `https://api.twitter.com/2/tweets/${tweetId}/quote_tweets?max_results=55&next_token=${next_token}`,
+            {
+              headers: {
+                Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
+                "Content-Type": "application/json",
+                "User-Agent": "YourApp/1.0.0", // Set your app's user agent here
+              },
+            }
+          );
+        }
+      }
+
+      if (!foundUser) {
+        message = "Not Quoted on tweet";
+      }
+
+      //Check for banned phrases
+      if (Requirements.bannedPhrases !== "") {
+        const bannedPhrasesFound = response.data.text.includes(Requirements.bannedPhrases);
+
+        if (bannedPhrasesFound) {
+          message = "One or More Banned Phrases has been found";
+        }
+      }
+
+      //Check for required phrases
+      if (Requirements.requiredPhrases !== "") {
+        const requiredPhrasesFound = response.data.text.includes(Requirements.requiredPhrases);
+
+        if (!requiredPhrasesFound) {
+          message = "All Required Phrases not found";
+        }
+      }
+
+      //Check for minimum character count
+      if (minimumCharacterCount !== 0) {
+        if (response.data.text.length < minimumCharacterCount) {
+          res.status(200).json({ message: "Minimum Character Count not maintained" });
+        }
+      }
+    } else {
+      console.log("No comment requirement");
+    }
+
+    res.status(200).json({ message: message });
   } catch (error) {
     // Handle any errors that occurred during the API request
     console.error("Error fetching users following:", error);

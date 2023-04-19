@@ -2,6 +2,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { myContext } from "./OAuthContext";
+import InputGroup from "react-bootstrap/InputGroup";
 
 function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
   const [currentCost, setCurrentCost] = useState(0);
@@ -24,7 +25,8 @@ function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
     time: "",
     winners: "",
     targetTweetId: "",
-    mustComment: "",
+    mustQuoted: "",
+    minCommentWords: "",
     mustForward: "",
     mustLikeLink: "",
     mustHaveMinFollowers: "",
@@ -32,6 +34,9 @@ function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
     mustHaveMinComment: "",
     commentCount: "",
     featured: "",
+    requiredPhrases: "",
+    bannedPhrases: "",
+    minFollowers: "",
   });
 
   const handleCloseAddModal = () => setShowAddModal(false);
@@ -59,16 +64,19 @@ function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
       time: newTweet.time,
       winners: newTweet.winners,
       targetTweetId: newTweet.targetTweetId,
-      mustComment: newTweet.mustComment,
+      mustQuoted: newTweet.mustQuoted,
       mustForward: newTweet.mustForward,
       mustLikeLink: newTweet.mustLikeLink,
       mustHaveMinFollowers: newTweet.mustHaveMinFollowers,
       minimumFollowers: newTweet.minimumFollowers,
-      mustHaveMinComment: newTweet.mustHaveMinComment,
-      commentCount: newTweet.commentCount,
+      minCommentWords: newTweet.minCommentWords,
+      minFollowers: newTweet.minFollowers,
+
       cost: currentCost,
       featured: newTweet.featured ? newTweet.featured : false,
       communityName: "EMPTY",
+      requiredPhrases: newTweet.requiredPhrases,
+      bannedPhrases: newTweet.bannedPhrases,
     });
 
     //handleCloseAddModal();
@@ -157,29 +165,89 @@ function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
             </Form.Group>
             <Form.Group controlId="formBasicType">
               <Form.Label>Tweet ID</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Target Tweet Id"
-                onChange={(e) => {
-                  setNewTweet({
-                    ...newTweet,
-                    targetTweetId: e.target.value,
-                  });
-                }}
-              />
+              <InputGroup>
+                <InputGroup.Text id="basic-addon1">164</InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Rest Of the target tweet ID(Exclude 164)"
+                  onChange={(e) => {
+                    setNewTweet({
+                      ...newTweet,
+                      targetTweetId: e.target.value,
+                    });
+                  }}
+                />
+              </InputGroup>
             </Form.Group>
             <Form.Group controlId="formBasicType">
               <Form.Label>Requirements</Form.Label>
               <Form.Check
                 type="checkbox"
-                label="Must Comment"
+                label="Must Post Quoted Tweet"
                 onChange={(e) => {
                   setNewTweet({
                     ...newTweet,
-                    mustComment: e.target.checked,
+                    mustQuoted: e.target.checked,
                   });
                 }}
               />
+
+              {newTweet.mustQuoted && (
+                <React.Fragment>
+                  <Form.Group controlId="formBasicType">
+                    <Form.Label>Ban Certain Phrases(Single Word)</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="ABC, asdsa, notagoodcomment, etc..."
+                      onChange={(e) => {
+                        setNewTweet({
+                          ...newTweet,
+                          bannedPhrases: e.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="formBasicType">
+                    <Form.Label>Require Certain Phrases(Single Word)</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Cool, Awesome, free, etc..."
+                      onChange={(e) => {
+                        setNewTweet({
+                          ...newTweet,
+                          requiredPhrases: e.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Group>
+
+                  <Form.Check
+                    type="checkbox"
+                    label="Must have minimum comment words count"
+                    onChange={(e) => {
+                      setNewTweet({
+                        ...newTweet,
+                        mustHaveMinCommentWords: e.target.checked,
+                      });
+                    }}
+                  />
+                </React.Fragment>
+              )}
+
+              {newTweet.mustHaveMinCommentWords && newTweet.mustQuoted && (
+                <Form.Control
+                  type="text"
+                  placeholder="Minimum Quoted Tweet Words Count"
+                  onChange={(e) => {
+                    setNewTweet({
+                      ...newTweet,
+                      minCommentWords: e.target.value,
+                    });
+                  }}
+                />
+              )}
+
               <Form.Check
                 type="checkbox"
                 label="Must Forward"
@@ -220,30 +288,6 @@ function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
                     setNewTweet({
                       ...newTweet,
                       minFollowers: e.target.value,
-                    });
-                  }}
-                />
-              )}
-
-              <Form.Check
-                type="checkbox"
-                label="Must have minimum comment words count"
-                onChange={(e) => {
-                  setNewTweet({
-                    ...newTweet,
-                    mustHaveMinCommentWords: e.target.checked,
-                  });
-                }}
-              />
-
-              {newTweet.mustHaveMinCommentWords && (
-                <Form.Control
-                  type="text"
-                  placeholder="Minimum Comment Words Count"
-                  onChange={(e) => {
-                    setNewTweet({
-                      ...newTweet,
-                      minCommentWords: e.target.value,
                     });
                   }}
                 />
