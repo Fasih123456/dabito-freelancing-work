@@ -1,7 +1,9 @@
 /* This CSS will affect all pages */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@300;400;500;700&display=swap');
+
 :root {
-  --primary: #040B14;
+  --primary: #212529;
   --secondary: #effaff;
   --third:#023848;
   --fourth:#0099ff;
@@ -31,61 +33,357 @@ body{
 #footer{
   padding: 0;
 }
-/*Mobile view */
-@media screen and (max-width: 769px) {
-  .homepage-icon {
-    width: 0%;
-  }
-
-  .section-container {
-    max-width: 100%;
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.col-md-3 {
-  flex-basis: calc(33.33% - 10px);
-  margin-bottom: 10px;
-}
-
-/* Add styles for featured tweets */
-.isFeatured {
-  background-color: gold; /* Set background color to gold */
-  border: 3px solid green;
-  border-radius: 10px; /* Add border radius */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add a box shadow */
-
-  margin-bottom: 20px; /* Add margin bottom */
-  transition: background-color 0.3s ease-in-out; /* Add transition effect */
-}
-
-.isFeatured:hover {
-  background-color: green; /* Change background color to white on hover */
-}
-
-.isFeatured h5 {
-  margin: 0;
-}
-
-.isFeatured p {
-  margin: 5px 0;
-}
-
-.isCommunity {
-  /* Add your styles for isCommunity here */
-  /* Example styles */
-  border: 3px solid purple;
-  background-color: lightblue;
-  font-style: italic;
-}
-
 .card-body {
-  border: 2px black solid;
+  
+  padding: 2rem 2rem !important;
+  border-radius: 2rem;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border: 0 !important;
+  width: 100%;
+  font-family: 'Sofia Sans Condensed', sans-serif;
+  font-weight: 400;
+  letter-spacing: 2px;
+  
+  
+}
+.card-title{
+  font-family: 'Sofia Sans Condensed', sans-serif !important;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 2vh !important;
+}
+.card-text{
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin-bottom: 2vh !important;
+}
+.card-body:hover{
+  background-color: #2e3236;
+}
+.info{
+  /* padding: 0 2rem; */
+  width: 70% !important;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2vh !important;
+}
+.in{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.p{
+  width: fit-content !important;
+  font-size: 1.2rem;
+}
+.require{
+  font-size: 1.3rem !important;
+}
+
+
+.f{
+  width: 100%;
+  
+padding: 0 !important;
+box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.44);
+-webkit-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.44);
+-moz-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.44);
+border-radius: 2rem;
+border: 2px solid var(--fourth) !important;
+
+}
+.f div{
+  background-color: 	#ffd700 !important;
+  border-radius: 2rem;
+  color: #2f4858;
+  
+
+}
+.othertweets{
+  width: 100%;
+  padding: 0 !important;
+border-radius: 2.1rem;
+box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.44);
+-webkit-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.44);
+-moz-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.44);
+border-radius: 2rem;
+border: 2px solid var(--fourth) !important;
+}
+
+
+.g-0{
+  margin-top: 0 !important;
+}
+.enter{
+  background-color: transparent !important;
+  width: 10vw;
+  height: 5vh;
+  border-radius: 2rem !important;
+  border: 2px solid var(--secondary) !important;
+  color: var(--secondary) !important;
+  font-size: 1.5rem !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  
+}
+.f div button{
+  background-color: 	#ffd700 !important;
+  /* border-radius: 2rem; */
+  color: #2f4858 !important;
+  border: 2px solid #2f4858 !important;
+  
+
+}
+.enter:hover{
+  border: 2px solid var(--fourth) !important;
+  color: var(--primary) !important;
+  background-color: var(--secondary) !important;
+}
+.delete{
+  background-color: transparent !important;
+  width: 10vw;
+  height: 5vh;
+  border-radius: 2rem !important;
+  border: 2px solid red !important;
+  color: rgb(255, 114, 114) !important;
+  font-size: 1.5rem !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.delete:hover{
+  border: 2px solid var(--secondary) !important;
+  color: var(--secondary) !important;
+  background-color: red !important;
+}
+.loggedin{
+  display: flex;
+  flex-direction: row;
+}
+.addtweet{
+  width: 50% !important;
+  background-color: var(--secondary) !important;
+  height: 4.5vh !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 1rem !important;
+  color: var(--fourth) !important;
+  border-color: var(--fourth) !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+.profile h1{
+  font-size: 1.5rem !important;
+  color: var(--secondary) !important;
+}
+.profile h1 a{
+  text-decoration: none;
+  color: var(--secondary) !important;
+
+}
+@media (max-width:600px)  {
+  .f{
+    width: 90vw !important;
+  }
+  .othertweets{
+    width: 90vw !important;
+  }
+  .loggedin{
+    margin-bottom: 2vh;
+    display: flex !important;
+    
+    align-items: center;
+  }
+  
+  .profile h1{
+    font-size: 1.2rem !important;
+    text-align: center;
+    margin-left: 2vw;
+  }
+  .info{
+    width: 100% !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    
+  }
+  .p{
+    font-size: 1.1rem !important;
+  }
+  .enter{
+    margin-bottom: 2vh;
+  }
+  
+}
+@media (min-width:600px) and (max-width: 1000px) {
+  .loggedin{
+    margin-bottom: 2vh;
+    display: flex !important;
+    
+    align-items: center;
+  }
+  .profile img{
+    width: 10vw;
+  }
+  .profile h1{
+    font-size: 1.7rem !important;
+    text-align: center;
+    margin-left: 2vw;
+  }
+  .info{
+    width: 90% !important;
+    
+
+  }
+  .enter{
+    width: 30vw;
+font-size: 1.8rem !important;
+
+  }
+  .col-md-3 {
+    flex: 0 0 auto;
+    width: 50% !important;
+  }
+  .delete{
+    width: 30vw;
+font-size: 1.8rem !important;
+  }
+ 
+}
+@media (min-width: 1000px) and (max-width: 1300px)  {
+
+  .enter{
+    width: 15vw !important;
+      height: 7vh;
+font-size: 1.8rem !important;
+margin-bottom: 2vh;
+
+  }
+  
+  .delete{
+    width: 15vw !important;
+    height: 7vh;
+font-size: 1.8rem !important;
+  }
+
+}
+@media (min-width: 1300px) and (max-width: 1600px)  {
+  .profile h1{
+    font-size: 1.4rem !important;
+    
+    text-align: center;
+  }
+  .enter{
+    width: 15vw !important;
+      height: 7vh;
+font-size: 1.8rem !important;
+margin-bottom: 2vh;
+
+  }
+  
+  .delete{
+    width: 15vw !important;
+    height: 7vh;
+font-size: 1.8rem !important;
+  }
+}
+@media (min-width: 2560px) and (max-width: 3839px)  {
+  .profile img{
+    width: 5vw;
+  }
+  .profile h1{
+    font-size: 3rem !important;
+    text-align: center;
+    
+  }
+  .profile h1{
+    font-size: 1.7rem !important;
+    text-align: center;
+    margin-left: 2vw;
+  }
+  .f{
+    width: 60vw !important;
+    max-width: 60vw !important;
+    height: 45vh;
+  }
+  .othertweets{
+    width: 60vw !important;
+    max-width: 60vw !important;
+    height: 45vh;
+  }
+  .enter{
+    margin-bottom: 2vh;
+    width: 15vw;
+    font-size: 2.5rem !important;
+  }
+  .delete{
+    width: 15vw !important;
+  }
+  .card-body{
+    height: 44.67vh;
+  }
+  .card-title{
+    font-size: 3rem;
+  }
+  .card-text{
+    font-size: 2.5rem;
+  }
+  .p{
+    font-size: 1.8rem;
+  }
+  .require{
+    font-size: 2rem !important;
+  }
+}
+@media (min-width: 3840px) {
+  .profile img{
+    width: 5vw;
+  }
+  .profile h1{
+    font-size: 3rem !important;
+    text-align: center;
+    
+  }
+  .f{
+    width: 60vw !important;
+    max-width: 60vw !important;
+    border-radius: 4rem;
+    border: none !important;
+    
+  }
+  .othertweets{
+    width: 60vw !important;
+    max-width: 60vw !important;
+    border-radius: 4rem;
+    
+  }
+  .card-body{
+    border-radius: 4rem;
+  }
+  .enter{
+    margin-bottom: 2vh;
+    width: 15vw;
+    font-size: 4.5rem !important;
+  }
+  .delete{
+    width: 15vw !important;
+    font-size: 4.5rem !important;
+  }
+  .card-body{
+    height: 44.67vh;
+  }
+  .card-title{
+    font-size: 4rem;
+  }
+  .card-text{
+    font-size: 4rem;
+  }
+  .p{
+    font-size: 3rem;
+  }
+  .require{
+    font-size: 3.2rem !important;
+  }
 }

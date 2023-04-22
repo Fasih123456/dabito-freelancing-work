@@ -37,6 +37,7 @@ const CommunityTweets = () => {
           {userObject && allCurrentTweets
             ? allCurrentTweets.map((tweet) => {
                 return (
+                  <div className="othertweets">
                   <Tweet
                     id={tweet.tweet_id}
                     title={userObject.username}
@@ -48,6 +49,7 @@ const CommunityTweets = () => {
                     requirements={tweet.requirements}
                     edit={false}
                   />
+                  </div>
                 );
               })
             : null}

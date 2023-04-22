@@ -32,12 +32,13 @@ const FeaturedTweets = () => {
           </Row>
         </div>
 
-        <div class="row portfolio-container" style={{ width: "100%" }}>
+        <div class="row portfolio-container"  style={{ width: "100%" }}>
           {userObject && allCurrentTweets
             ? allCurrentTweets.map((tweet) => {
                 if (tweet.name == userObject.username) {
                   return (
-                    <Tweet
+                    <div className="f">
+                    <Tweet 
                       id={tweet.tweet_id}
                       title={tweet.name}
                       text={tweet.tweet_text}
@@ -47,11 +48,14 @@ const FeaturedTweets = () => {
                       expiryTime={tweet.expiry_time}
                       requirements={tweet.requirements}
                       edit={true}
+                      
                     />
+                    </div>
                   );
                 } else {
                   return (
-                    <Tweet
+                    <div className="f">
+                    <Tweet 
                       id={tweet.tweet_id}
                       title={tweet.name}
                       text={tweet.tweet_text}
@@ -61,7 +65,9 @@ const FeaturedTweets = () => {
                       expiryTime={tweet.expiry_time}
                       requirements={tweet.requirements}
                       edit={false}
+                      
                     />
+                    </div>
                   );
                 }
               })

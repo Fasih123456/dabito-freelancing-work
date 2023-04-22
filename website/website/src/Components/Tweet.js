@@ -106,31 +106,42 @@ function Tweet({
             <h4 class="card-title">@{title}</h4>
             <h5 class="card-text">{text}</h5>
 
-            <div class="row g-0">
-              <div class="col-md-3">Reward</div>
-              <div class="col-md-3">Time</div>
-              <div class="col-md-3">Winners</div>
-              <div class="col-md-3"></div>
-            </div>
-            <div class="row g-0">
-              <div class="col-md-3">${winner}</div>
-              <div class="col-md-3">
+            
+              <div className="info">
+              <div className="in">
+              <div class="col-md-3 p">Reward</div>
+              <div class="col-md-3 p">{amount}</div>
+              </div>
+              <div className="in">
+              <div class="col-md-3 p">Time</div>
+              <div class="col-md-3 p">
                 {hours}h {minutes}m<span class="seconds">{seconds}s </span>
               </div>
-              <div class="col-md-3">{amount}</div>
+              </div>
+              <div className="in">
+              <div class="col-md-3 p">Winners</div>
+              <div class="col-md-3 p">${winner}</div>
+              </div>
+              </div>
+              {/* <div class="col-md-3 p"></div> */}
+           
+            <div class="row g-0">
+              
+              
+              
               {edit ? (
                 <React.Fragment>
                   <div className="col-md-3">
                     <button
                       type="button"
-                      className="btn btn-primary"
+                      className="btn btn-primary enter"
                       onClick={(e) => handleAddModal()}
                     >
                       Edit
                     </button>
                   </div>
                   <div className="col-md-3">
-                    <button type="button" className="btn btn-danger" onClick={(e) => deleteTweet()}>
+                    <button type="button" className="btn btn-danger delete" onClick={(e) => deleteTweet()}>
                       Delete
                     </button>
                   </div>
@@ -140,13 +151,13 @@ function Tweet({
                   {verify ? (
                     <button
                       type="button"
-                      className="btn btn-primary"
+                      className="btn btn-primary enter"
                       onClick={(e) => verifyRequirements(id)}
                     >
                       Verify Requirements
                     </button>
                   ) : (
-                    <button type="button" className="btn btn-primary" onClick={(e) => enterTweet()}>
+                    <button type="button" className="btn btn-primary enter" onClick={(e) => enterTweet()}>
                       Enter
                     </button>
                   )}
@@ -158,21 +169,21 @@ function Tweet({
                 <hr />
               </div>
             </div>
-            <div class="row g-0">
-              <div class="col-md-3">Requirements</div>
-              <div class="col-md-9">
+            <div class="row g-0 require">
+              <div class="col-md-3">Requirements:</div>
+              <div class="col-md-9 task">
                 {requirements && (
-                  <ul>
-                    {requirements.mustComment && <li>Must comment</li>}
-                    {requirements.mustForward && <li>Must forward</li>}
-                    {requirements.mustLikeLink && <li>Must like link</li>}
+                  <ol>
+                    {requirements.mustComment && <li >Must comment</li>}
+                    {requirements.mustForward && <li >Must forward</li>}
+                    {requirements.mustLikeLink && <li >Must like link</li>}
                     {requirements.mustHaveMinFollowers && (
-                      <li>Must have minimum followers: {requirements.minimumFollowers}</li>
+                      <li >Must have minimum followers: {requirements.minimumFollowers}</li>
                     )}
                     {requirements.mustHaveMinComment && (
-                      <li>Must have minimum comment count: {requirements.commentCount}</li>
+                      <li >Must have minimum comment count: {requirements.commentCount}</li>
                     )}
-                  </ul>
+                  </ol>
                 )}
               </div>
             </div>

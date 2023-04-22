@@ -31,7 +31,7 @@ const YourTweets = () => {
             </Col>
             {userObject && (
               <Col>
-                <Button variant="info" onClick={() => handleAddModal()} style={{ float: "right" }}>
+                <Button variant="info" className="addtweet" onClick={() => handleAddModal()} style={{ float: "right" }}>
                   Add Tweet
                 </Button>
               </Col>
@@ -43,6 +43,7 @@ const YourTweets = () => {
           {userObject && allCurrentTweets
             ? allCurrentTweets.map((tweet) => {
                 return (
+                  <div className="othertweets">
                   <Tweet
                     id={tweet.tweet_id}
                     title={userObject.username}
@@ -54,6 +55,7 @@ const YourTweets = () => {
                     requirements={tweet.requirements}
                     edit={true}
                   />
+                  </div>
                 );
               })
             : null}
