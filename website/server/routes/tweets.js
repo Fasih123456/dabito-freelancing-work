@@ -18,13 +18,15 @@ router.post("/api/tweets/:id", (req, res) => {
   //TODO: create a random number tweet id
   //TODO: validtill is body.time + 1 week, (maximum of 1 month)
   const requirements = {
-    mustComment: req.body.mustComment || "",
+    mustQuoted: req.body.mustQuoted || "",
     mustForward: req.body.mustForward || "",
     mustLikeLink: req.body.mustLikeLink || "",
     mustHaveMinFollowers: req.body.mustHaveMinFollowers || "",
-    minimumFollowers: req.body.minimumFollowers || "",
-    mustHaveMinComment: req.body.mustHaveMinComment || "",
-    commentCount: req.body.commentCount || "",
+    minFollowers: req.body.minFollowers || "",
+    minCommentWords: req.body.minCommentWords || "",
+
+    requiredPhrases: req.body.requiredPhrases || "",
+    bannedPhrases: req.body.bannedPhrases || "",
   };
 
   let tweet = new Tweets(

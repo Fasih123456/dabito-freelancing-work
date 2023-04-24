@@ -24,6 +24,8 @@ function Homepage() {
 
   const userObject = useContext(myContext);
 
+  console.log(userObject);
+
   return (
     <div>
       <main id="main">
