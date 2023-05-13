@@ -10,8 +10,8 @@ require("dotenv").config();
 
 const TWITTER_API_KEY = process.env.TWITTER_API_KEY;
 const TWITTER_API_SECRET_KEY = process.env.TWITTER_API_SECRET_KEY;
-const TWITTER_CONSUMER_KEY = "MFhTe8ojilLTveO9VElA0lX5o";
-const TWITTER_CONSUMER_SECRET = "L2pY0kHYDaYXqJ8Ew6E8fhVUq6ZEA6wHv901JPqW6n9aWT9U7d";
+const TWITTER_CONSUMER_KEY = "kaCfaNRiXXo2b3RbU2QgYUBRH";
+const TWITTER_CONSUMER_SECRET = "BVPPVfbJaTcpi0NaF7R7HoKnNPb5pX4h3A9KJwSm3kAMydNbgK";
 
 router.use(
   session({

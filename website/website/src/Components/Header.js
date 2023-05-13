@@ -207,11 +207,13 @@ function Header({ location, profileId }) {
           <div class="profile">
             {userObject.id ? (
               <React.Fragment>
-                <img src={userObject.photos[0].value} alt="" class="img-fluid rounded-circle" />
+                <div className="loggedin">
+                  <img src={userObject.photos[0].value} alt="" class="img-fluid rounded-circle" />
 
-                <h1 class="text-light">
-                  <a href="/">{userObject.displayName}</a>
-                </h1>
+                  <h1 class="text-light">
+                    <a href="/">{userObject.displayName}</a>
+                  </h1>
+                </div>
                 <button className="loginbtn" onClick={twitterLogout}>
                   Logout
                 </button>

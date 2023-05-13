@@ -29,8 +29,8 @@ router.get("/usersfollowing/:id", async (req, res) => {
   let isVerified = false;
   let maxCapacityReached = Tweet[0].winners_so_far >= Tweet[0].max_winners;
 
-  const YOUR_TWITTER_BEARER_TOKEN =
-    "AAAAAAAAAAAAAAAAAAAAAFtUmAEAAAAAFiQy1WXpS%2BezO4LoW1Kel5uO4sE%3D3Ipt0uQnEE82eeXMUnlEPp4tidYhYL1Likop5SJaTYkN167oSw";
+  const YOUR_TWITTER_BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAA4BiwEAAAAASiVhj2vzR89HfeGYuV56Ni9NTnc%3DBaqNEeLhCvheZNZo4YKP6MAKf08yivGpJ1VteHnk2ZnYQ6Q326";
+    //process.env.TWITTER_BEARER_TOKEN
 
   try {
     let response;
@@ -182,7 +182,7 @@ router.get("retweet/:id", async (req, res) => {
   console.log(tweetId);
 
   const YOUR_TWITTER_BEARER_TOKEN =
-    "AAAAAAAAAAAAAAAAAAAAAFtUmAEAAAAAFiQy1WXpS%2BezO4LoW1Kel5uO4sE%3D3Ipt0uQnEE82eeXMUnlEPp4tidYhYL1Likop5SJaTYkN167oSw";
+    "AAAAAAAAAAAAAAAAAAAAAA4BiwEAAAAASiVhj2vzR89HfeGYuV56Ni9NTnc%3DBaqNEeLhCvheZNZo4YKP6MAKf08yivGpJ1VteHnk2ZnYQ6Q326";
 
   try {
     let isVerified = false;
@@ -258,7 +258,7 @@ router.get("retweet/:id", async (req, res) => {
 
     res.status(200).json({ message: "Verification completed" });
   } catch (error) {
-    // Handle any errors that occurred during the API request
+    // Handle any errors that occurred during the API  
     console.error("Error fetching users following:", error);
     res.status(500).json({ error: "Failed to fetch users following" });
   }

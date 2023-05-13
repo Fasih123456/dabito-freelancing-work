@@ -26,9 +26,12 @@ button {
   background-color: var(--primary) !important;
   
   
+  
 }
 .n{
   border-bottom: 3px solid var(--fourth);
+  position: fixed !important;
+  z-index: 1;
 }
 .con1{
   width: 100vw;
@@ -65,7 +68,7 @@ transition: all ease-in-out 0.5s;
 z-index: 9997;
 transition: all 0.5s;
 padding: 0 15px;
-background: #040b14;
+background: var(--primary);
 overflow-y: auto;
 }
 .navbar-nav {
