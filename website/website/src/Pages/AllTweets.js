@@ -34,13 +34,14 @@ function AllTweets({}) {
 
   return (
     <main id="main">
-      <Container>
+      <div class="section-title">
         <Row>
-          <Col>filter featured by community or isfeatured</Col>
-          <Col>filter featured by Live, ALl Ongoing</Col>
+          <Col>
+            <h2>Featured Tweets</h2>
+          </Col>
         </Row>
-      </Container>
-      <div className="row portfolio-container" style={{ width: "90%", marginLeft: "0px" }}>
+      </div>
+      <div className="row portfolio-container" style={{ width: "90%", marginLeft: "2px" }}>
         {userObject && currentTweets.length > 0
           ? currentTweets.map((tweet) => {
               return (

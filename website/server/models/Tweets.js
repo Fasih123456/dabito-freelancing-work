@@ -103,4 +103,10 @@ module.exports = class Tweets {
       return rows;
     });
   }
+
+  static updateTweetWinners(tweetId) {
+    return db.execute("UPDATE tweets SET winners_so_far = winners_so_far + 1 WHERE tweet_id = ?", [
+      tweetId,
+    ]);
+  }
 };

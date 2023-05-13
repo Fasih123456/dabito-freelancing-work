@@ -36,14 +36,7 @@ function Homepage() {
           ) : (
             // display this HTML below 800px
             //TODO: The view for this is broken need to fix it
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active .status-tag">
-                All(31)
-              </li>
-              <li data-filter=".filter-app status-tag">Live(5)</li>
-              <li data-filter=".filter-card .status-tag">Ongoing(2)</li>
-              <li data-filter=".filter-web .status-tag">Ended(24)</li>
-            </ul>
+            <ul id="portfolio-flters"></ul>
           )}
         </section>
         <FeaturedTweets />

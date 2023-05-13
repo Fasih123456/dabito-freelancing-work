@@ -7,15 +7,12 @@ const Tweets = require("../models/Tweets");
 router.get("/usersfollowing/:id", async (req, res) => {
   const id = req.params.id; // Get the user ID from the request parameters
   const tweetId = 164 + req.query.tweetId; // Get the tweetId from the query parameters
-  const minimumFollowerCount = req.query.minimumFollowerCount || 0; // Get the minimumFollowerCount from the query parameters
-  const hasCommentRequirements = req.query.hasCommentRequirements || false; // Get the hasCommentRequirements from the query parameters
-  const hasLikedTweet = req.query.hasLikedTweet || false; // Get the hasLikedTweet from the query parameters
 
-  console.log("params", req.params);
+  //console.log("params", req.params);
 
   const shortTweetId = tweetId.slice(3); //All our database tweets are stored as shortTweets
 
-  console.log("tweetId", shortTweetId);
+  //console.log("tweetId", shortTweetId);
 
   //8419084504272897
 
@@ -30,6 +27,7 @@ router.get("/usersfollowing/:id", async (req, res) => {
   console.log(`https://api.twitter.com/2/tweets/${tweetId}/retweeted_by`);
 
   let isVerified = false;
+  let maxCapacityReached = Tweet[0].winners_so_far >= Tweet[0].max_winners;
 
   const YOUR_TWITTER_BEARER_TOKEN =
     "AAAAAAAAAAAAAAAAAAAAAFtUmAEAAAAAFiQy1WXpS%2BezO4LoW1Kel5uO4sE%3D3Ipt0uQnEE82eeXMUnlEPp4tidYhYL1Likop5SJaTYkN167oSw";
@@ -37,7 +35,7 @@ router.get("/usersfollowing/:id", async (req, res) => {
   try {
     let response;
 
-    if (Requirements.mustHaveMinFollowers == true) {
+    if (Requirements.mustHaveMinFollowers == true && !maxCapacityReached) {
       console.log(`Followers requirement of ${Requirements.minFollowers}`);
       //If yes then check if user has enough followers
       response = await axios.get(`https://api.twitter.com/2/users/${id}/followers`, {
@@ -59,7 +57,7 @@ router.get("/usersfollowing/:id", async (req, res) => {
 
     console.log(tweetId);
 
-    if (Requirements.mustLikeLink == true) {
+    if (Requirements.mustLikeLink == true && !maxCapacityReached) {
       console.log("Like requirement");
       //If yes check if user has liked the Tweet
       response = await axios.get(`https://api.twitter.com/2/tweets/${tweetId}/liking_users`, {
@@ -70,7 +68,7 @@ router.get("/usersfollowing/:id", async (req, res) => {
         },
       });
 
-      console.log(response.data);
+      //console.log(response.data);
 
       if (response.data.meta.result_count == 0) {
         isVerified = false;
@@ -78,7 +76,7 @@ router.get("/usersfollowing/:id", async (req, res) => {
         isVerified = response.data.data.some((user) => user.id == id);
       }
 
-      console.log(id);
+      //console.log(id);
 
       if (!isVerified) {
         message = "Not liked tweet";
@@ -87,12 +85,12 @@ router.get("/usersfollowing/:id", async (req, res) => {
       console.log("No like requirement");
     }
 
-    if (Requirements.mustQuoted == true) {
+    if (Requirements.mustQuoted == true && !maxCapacityReached) {
       //The comment is actually for Qouted tweets
       console.log("Comment requirement");
       //Check if user has commented on tweet
       response = await axios.get(
-        `https://api.twitter.com/2/tweets/${tweetId}/quote_tweets?max_results=55`,
+        `https://api.twitter.com/2/tweets/${tweetId}/quote_tweets?max_results=55&expansions=author_id`,
         {
           headers: {
             Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
@@ -103,14 +101,20 @@ router.get("/usersfollowing/:id", async (req, res) => {
       );
 
       let foundUser = false;
-      while (!foundUser && response.data.meta.next_token) {
+      let thisUser;
+      console.log("User id", id);
+      console.log(response.data);
+      while (!foundUser) {
         const quoteTweets = response.data.data;
         const next_token = response.data.meta.next_token || "";
-        foundUser = quoteTweets.some((quoteTweet) => quoteTweet.id === id);
+        foundUser = quoteTweets.some((quoteTweet) => quoteTweet.author_id === 1512373759851868162);
+        thisUser = quoteTweets.find((quoteTweet) => quoteTweet.author_id == 1512373759851868162);
+
+        if (next_token == undefined || next_token == "") break;
 
         if (!foundUser && next_token !== "") {
           response = await axios.get(
-            `https://api.twitter.com/2/tweets/${tweetId}/quote_tweets?max_results=55&next_token=${next_token}`,
+            `https://api.twitter.com/2/tweets/${tweetId}/quote_tweets?max_results=55&next_token=${next_token}&expansions=author_id`,
             {
               headers: {
                 Authorization: `Bearer ${YOUR_TWITTER_BEARER_TOKEN}`,
@@ -121,39 +125,42 @@ router.get("/usersfollowing/:id", async (req, res) => {
           );
         }
       }
+      console.log(thisUser);
+      //console.log(response.data.data);
 
-      if (!foundUser) {
+      if (thisUser == undefined) {
         message = "Not Quoted on tweet";
-      }
+      } else {
+        //Check for banned phrases
+        if (Requirements.bannedPhrases !== "") {
+          const bannedPhrasesFound = thisUser.text.includes(Requirements.bannedPhrases);
 
-      //Check for banned phrases
-      if (Requirements.bannedPhrases !== "") {
-        const bannedPhrasesFound = response.data.text.includes(Requirements.bannedPhrases);
-
-        if (bannedPhrasesFound) {
-          message = "One or More Banned Phrases has been found";
+          if (bannedPhrasesFound) {
+            message = "One or More Banned Phrases has been found";
+          }
         }
-      }
 
-      //Check for required phrases
-      if (Requirements.requiredPhrases !== "") {
-        const requiredPhrasesFound = response.data.text.includes(Requirements.requiredPhrases);
+        //Check for required phrases
+        if (Requirements.requiredPhrases !== "") {
+          const requiredPhrasesFound = thisUser.text.includes(Requirements.requiredPhrases);
 
-        if (!requiredPhrasesFound) {
-          message = "All Required Phrases not found";
+          if (!requiredPhrasesFound) {
+            message = "All Required Phrases not found";
+          }
         }
-      }
 
-      //Check for minimum character count
-      if (minimumCharacterCount !== 0) {
-        if (response.data.text.length < minimumCharacterCount) {
-          res.status(200).json({ message: "Minimum Character Count not maintained" });
+        //Check for minimum character count
+        if (Requirements.minCommentWords !== 0) {
+          if (thisUser.text.length < Requirements.minCommentWords) {
+            message = "Not enough characters in comment";
+          }
         }
       }
     } else {
       console.log("No comment requirement");
     }
 
+    console.log(message);
     res.status(200).json({ message: message });
   } catch (error) {
     // Handle any errors that occurred during the API request

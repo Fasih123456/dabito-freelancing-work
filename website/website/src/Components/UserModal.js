@@ -3,18 +3,20 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { myContext } from "./OAuthContext";
 import InputGroup from "react-bootstrap/InputGroup";
+import { ToastContainer, toast } from "react-toastify";
+
+// Function to check if a string contains only numbers
+function isNumeric(str) {
+  return /^\d+$/.test(str);
+}
 
 function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
   const [currentCost, setCurrentCost] = useState(0);
-  const [currentUser, setCurrentUser] = useState({
-    id: "",
-    displayName: "",
-    username: "",
-    profileImageUrl: "",
-  });
+
   const userObject = useContext(myContext);
 
   const [couponCode, setCouponCode] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
 
   let couponCodeMultipler = 1;
 
@@ -51,35 +53,69 @@ function UserModal({ handleAddModal, setShowAddModal, showAddModal }) {
     });
   };
 
+  const verifyModal = () => {
+    if (newTweet.title == "") {
+      toast.error("Please enter a title");
+      return false;
+    }
+
+    if (newTweet.reward == "" || !isNumeric(newTweet.reward)) {
+      toast.error("Please enter a number of winners (Numbers Only)");
+      return false;
+    }
+
+    if (newTweet.time == "") {
+      toast.error("Please enter a time");
+      return false;
+    }
+
+    if (newTweet.winners === "" || !isNumeric(newTweet.winners)) {
+      toast.error("Please enter a reward (Numbers Only)");
+
+      return false;
+    }
+
+    if (newTweet.targetTweetId == "" || !isNumeric(newTweet.targetTweetId)) {
+      toast.error("Please enter a target tweet id (Numbers Only)");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleAddNewUserModal = () => {
     if (couponCode != "") {
       verifyCoupon();
     }
 
-    console.log(`Adding new user`);
-    console.log(newTweet.featured);
-    axios.post(`http://localhost:3001/api/tweets/${userObject.id}`, {
-      title: newTweet.title,
-      reward: newTweet.reward,
-      time: newTweet.time,
-      winners: newTweet.winners,
-      targetTweetId: newTweet.targetTweetId,
-      mustQuoted: newTweet.mustQuoted,
-      mustForward: newTweet.mustForward,
-      mustLikeLink: newTweet.mustLikeLink,
-      mustHaveMinFollowers: newTweet.mustHaveMinFollowers,
-      minimumFollowers: newTweet.minimumFollowers,
-      minCommentWords: newTweet.minCommentWords,
-      minFollowers: newTweet.minFollowers,
+    let isVerified = verifyModal();
 
-      cost: currentCost,
-      featured: newTweet.featured ? newTweet.featured : false,
-      communityName: "EMPTY",
-      requiredPhrases: newTweet.requiredPhrases,
-      bannedPhrases: newTweet.bannedPhrases,
-    });
+    if (isVerified) {
+      console.log(`Adding new user`);
+      console.log(newTweet.featured);
+      axios.post(`http://localhost:3001/api/tweets/${userObject.id}`, {
+        title: newTweet.title,
+        reward: newTweet.reward,
+        time: newTweet.time,
+        winners: newTweet.winners,
+        targetTweetId: newTweet.targetTweetId,
+        mustQuoted: newTweet.mustQuoted,
+        mustForward: newTweet.mustForward,
+        mustLikeLink: newTweet.mustLikeLink,
+        mustHaveMinFollowers: newTweet.mustHaveMinFollowers,
+        minimumFollowers: newTweet.minimumFollowers,
+        minCommentWords: newTweet.minCommentWords,
+        minFollowers: newTweet.minFollowers,
 
-    //handleCloseAddModal();
+        cost: currentCost,
+        featured: newTweet.featured ? newTweet.featured : false,
+        communityName: "EMPTY",
+        requiredPhrases: newTweet.requiredPhrases,
+        bannedPhrases: newTweet.bannedPhrases,
+      });
+
+      handleCloseAddModal();
+    }
   };
 
   const calculateCost = () => {

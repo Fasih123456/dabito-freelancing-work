@@ -42,6 +42,7 @@ function Tweet({
 
   const handleAddModal = () => setShowAddModal(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [quotedTweetId, setQuotedTweetId] = useState("Please enter a tweet id");
 
   const hours = moment(expiryTime).diff(moment(), "hours");
   const minutes = moment(expiryTime).diff(moment(), "minutes") - hours * 60;
@@ -54,6 +55,8 @@ function Tweet({
       .get(`http://localhost:3001/usersfollowing/${userObject.id}`, {
         params: {
           tweetId: `${id}`,
+
+          username: userObject.username,
         },
       }) // Pass tweetId as a query parameter in the URL
       .then((response) => {
@@ -68,7 +71,7 @@ function Tweet({
           // Show success toast
           toast.success("Verification complete");
           axios
-            .put(`http://localhost:3001/api/updateRaider/${userObject.id}`, {
+            .put(`http://localhost:3001/api/updateRaider/${userObject.id}`, null, {
               params: {
                 tweetId: id, // Update parameter name to match server-side code
               },

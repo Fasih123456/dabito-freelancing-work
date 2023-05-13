@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const RaidersModel = require("../models/Raiders");
+const TweetsModal = require("../models/Tweets");
 const axios = require("axios");
 
 //This is the route which will handle accepting tweets and verfying they are added to the database
@@ -67,6 +68,10 @@ router.put("/api/updateRaider/:raiderId", function (req, res, next) {
   const newId = raider_id.slice(0, 8);
 
   console.log("updateRaiderStatus: " + newId + " " + tweet_id);
+
+  TweetsModal.updateTweetWinners(tweet_id).then(([rows, fieldData]) => {
+    console.log(rows);
+  });
 
   RaidersModel.updateRaiderStatus(newId, tweet_id).then(([rows, fieldData]) => {
     console.log(rows);
